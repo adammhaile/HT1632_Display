@@ -260,7 +260,7 @@ void UpdateDisplay()
 
 		disp.syncDisplays();
 		
-		Serial.print("#");
+		Serial.print("#"); //So we know the display has been updated
 	}
 }
 
