@@ -35,12 +35,24 @@ def doGameOfLife():
 	curThread = GameOfLife(disp)
 	curThread.start()
 
+def doMainframe():
+	global curThread
+	curThread = mainframe(disp)
+	curThread.start()
+
+def doMainframeScroll():
+	global curThread
+	curThread = mainframe(disp, 1)
+	curThread.start()
+
 menuOpts = [
 ["Exit", doExit],
 ["Clear/Stop", doClear],
 ["Hello World", doHelloWorld],
 ["Row/Col Demo", doDemo],
-["Game of Life", doGameOfLife]
+["Game of Life", doGameOfLife],
+["90s Mainframe", doMainframe],
+["90s Mainframe (Scroll)", doMainframeScroll]
 ]
 
 def printMenu():

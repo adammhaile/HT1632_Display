@@ -24,7 +24,7 @@ class GameOfLife(stop_thread.stopThread):
 		self.disp.sendDisplay()
 
 	def run(self):
-		t = Table(self.disp.Y_MAX, self.disp.X_MAX, 4, None)
+		t = Table(self.disp.Y_MAX, self.disp.X_MAX, 2, None)
 		while not self._stopped():
 			self.draw(t)
 			t.turn()
