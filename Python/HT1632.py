@@ -2,6 +2,7 @@ import sys, getopt
 import time
 import struct
 import os
+import threading
 
 from LEDFont import LEDFont
 
@@ -16,6 +17,11 @@ class HT1632:
 
 		self._dispBuf = [0] * self.X_MAX
 		self._font = LEDFont()
+
+		#self.condition = threading.Condition()
+
+		#self._dataFlag = False;
+		#self.dispUpdater = DisplayUpdater(self.com, self.condition, self._dataFlag, self._dispBuf)
 
 		try:
 			import serial.tools
@@ -33,6 +39,8 @@ class HT1632:
 		print "Connected to " + self.dev + " @ " + str(self.baud) + " baud"
 		self.com.flushInput()
 
+		#self.dispUpdater.start()
+
 	def clearDispBuf(self):
 		self._dispBuf = [0] * self.X_MAX
 	
@@ -41,7 +49,7 @@ class HT1632:
 			self._dispBuf[col] = self._dispBuf[col] | (1 << row)
 		else:
 			self._dispBuf[col] = self._dispBuf[col] & ~(1 << row)
-		
+
 	def sendData(self, data):
 		if self.com != None:
 			b = self.com.write(bytes(data))

@@ -5,7 +5,62 @@ import os
 
 from HT1632 import HT1632
 
+from misc_funcs import *
+
+from GameOfLife import GameOfLife
+
 disp = None
+
+curThread = None
+
+def doExit():
+	sys.exit()
+
+def doClear():
+	disp.clearDispBuf()
+	disp.sendDisplay()
+
+def doHelloWorld():
+	disp.clearDispBuf()
+	disp.printString(0, "Hello!!!! World!!!!")
+	disp.sendDisplay()
+
+def doDemo():
+	global curThread
+	curThread = row_col_demo(disp)
+	curThread.start()
+
+def doGameOfLife():
+	global curThread
+	curThread = GameOfLife(disp)
+	curThread.start()
+
+menuOpts = [
+["Exit", doExit],
+["Clear/Stop", doClear],
+["Hello World", doHelloWorld],
+["Row/Col Demo", doDemo],
+["Game of Life", doGameOfLife]
+]
+
+def printMenu():
+	for i in range(0, len(menuOpts)):
+		print str(i) + " - " + menuOpts[i][0]
+
+def handleMenu(choice):
+	try:
+		i = int(choice)
+		if i < len(menuOpts):
+			global curThread
+			if curThread != None:
+				curThread.stop()
+				curThread.join()
+				curThread = None
+			menuOpts[i][1]()
+		else:
+			raise ValueError()
+	except ValueError:
+		print "Invalid Option!"
 
 system = os.name
 
@@ -83,9 +138,10 @@ except StandardError, e:
 	sys.exit()
 
 try:
-	disp.clearDispBuf()
-	disp.printString(0, "Hello!!!! World!!!!")
-	disp.sendDisplay()
+	while True:
+		printMenu()
+		i = raw_input("Choice: ")
+		handleMenu(i)
 
 	time.sleep(2)
 	
