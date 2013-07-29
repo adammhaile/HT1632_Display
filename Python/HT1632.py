@@ -18,10 +18,10 @@ class HT1632:
 		self._dispBuf = [0] * self.X_MAX
 		self._font = LEDFont()
 
-		#self.condition = threading.Condition()
-
-		#self._dataFlag = False;
-		#self.dispUpdater = DisplayUpdater(self.com, self.condition, self._dataFlag, self._dispBuf)
+		self._curString = ""
+		self._curStringW = 0
+		self._curStringPos = 0
+		self._curStringDir = -1
 
 		try:
 			import serial.tools
@@ -93,4 +93,40 @@ class HT1632:
 
 	def getStringWidth(self, string):
 		return self._font.getStringWidth(string)
+
+	def setCurrentString(self, string, pos):
+		self._curString = string
+		self._curStringW = self.getStringWidth(self._curString)
+		self._curStringPos = pos
 	
+	def scrollCurrentString(self):
+		self.clearDispBuf()
+		self.printString(self._curStringPos, self._curString)
+
+		self._curStringPos = self._curStringPos - 1
+		if self._curStringPos + self._curStringW <= 0:
+			self._curStringPos = self.X_MAX - 1
+
+		self.sendDisplay()
+
+		return self._curStringPos
+
+	def bounceCurrentString(self):
+		self.clearDispBuf()
+		self.printString(self._curStringPos, self._curString)
+
+		self._curStringPos = self._curStringPos + self._curStringDir
+		if self._curStringW > self.X_MAX:
+			if self._curStringDir == -1 and self._curStringPos + self._curStringW < self.X_MAX:
+				self._curStringDir = 1
+			elif self._curStringDir == 1 and self._curStringPos >= 1:
+				self._curStringDir = -1
+		else:
+			if self._curStringPos <= 0:
+				self._curStringDir = 1
+			elif self._curStringPos + self._curStringW > self.X_MAX:
+				self._curStringDir = -1
+
+		self.sendDisplay()
+
+		return self._curStringPos

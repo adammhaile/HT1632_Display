@@ -33,16 +33,9 @@ class scroll_text(stop_thread.dispThread):
 		self.text = raw_input("Text to scroll: ")
 
 	def run(self):
-		w = self.disp.getStringWidth(self.text)
+		self.disp.setCurrentString(self.text, self.pos)
 		while not self._stopped():
-			self.disp.clearDispBuf()
-			self.disp.printString(self.pos, self.text)
-
-			self.pos = self.pos - 1
-			if self.pos + w <= 0:
-				self.pos = self.disp.X_MAX - 1
-
-			self.disp.sendDisplay()
+			self.disp.scrollCurrentString()
 			#time.sleep(0.1)
 
 class bounce_text(stop_thread.dispThread):
@@ -50,8 +43,7 @@ class bounce_text(stop_thread.dispThread):
 		super(bounce_text, self).__init__()
 		self.disp = disp
 		self.text = text
-		self.pos = pos	
-		self.dir = -1
+		self.pos = pos
 		if self.text == "":
 			self.getInput()
 
@@ -59,24 +51,9 @@ class bounce_text(stop_thread.dispThread):
 		self.text = raw_input("Text to bounce: ")
 
 	def run(self):
-		w = self.disp.getStringWidth(self.text)
+		self.disp.setCurrentString(self.text, self.pos)
 		while not self._stopped():
-			self.disp.clearDispBuf()
-			self.disp.printString(self.pos, self.text)
-
-			self.pos = self.pos + self.dir
-			if w > self.disp.X_MAX:
-				if self.dir == -1 and self.pos + w < self.disp.X_MAX:
-					self.dir = 1
-				elif self.dir == 1 and self.pos >= 1:
-					self.dir = -1
-			else:
-				if self.pos <= 0:
-					self.dir = 1
-				elif self.pos + w > self.disp.X_MAX:
-					self.dir = -1
-
-			self.disp.sendDisplay()
+			self.disp.bounceCurrentString()
 			#time.sleep(0.1)
 
 from datetime import datetime
