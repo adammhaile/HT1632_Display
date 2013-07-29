@@ -76,9 +76,12 @@ class HT1632:
 	
 	def printChar(self, pos, char):
 		w = self._font.getCharWidth(char)
+		if pos + w < 0:
+			return w
 		data = self._font.getCharData(char)
 		for col in range(0,w):
-			self.setCol(pos + col, data[col])
+			if pos + col >= 0 and pos + col < self.X_MAX:
+				self.setCol(pos + col, data[col])
 	
 		return w
 		
@@ -86,8 +89,8 @@ class HT1632:
 		w = 0
 		for c in string:
 			w = self.printChar(pos, c)
-			#if c == ' ':
-			#	pos += w
-			#else:
 			pos += (w + 1)
+
+	def getStringWidth(self, string):
+		return self._font.getStringWidth(string)
 	

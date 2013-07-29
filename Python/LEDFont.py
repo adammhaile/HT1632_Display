@@ -108,3 +108,11 @@ class LEDFont:
 	def getCharWidth(self, char):
 		i = self._index_list[ord(char)]
 		return self._width_list[i]
+
+	def getStringWidth(self, string):
+		w = 0
+		len = 0
+		for c in string:
+			w = self.getCharWidth(c)
+			len += (w + 1)
+		return len

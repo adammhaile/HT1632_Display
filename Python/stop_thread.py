@@ -1,9 +1,11 @@
 import threading
 
-class stopThread(threading.Thread):
+class dispThread(threading.Thread):
 	def __init__(self):
-		super(stopThread, self).__init__()
+		super(dispThread, self).__init__()
 		self._stop = threading.Event()
+		self.requiresInput = False
+		self.input = ""
 
 	def stop(self):
 		self._stop.set()
@@ -11,6 +13,8 @@ class stopThread(threading.Thread):
 	def _stopped(self):
 		return self._stop.isSet()	
 
+	def getInput():
+		self.input = ""
 
 
 

@@ -40,24 +40,26 @@ def doMainframe():
 	curThread = mainframe(disp)
 	curThread.start()
 
-def doMainframeScroll():
+def doHelloWorldScroll():
 	global curThread
-	curThread = mainframe(disp, 1)
+	curThread = scroll_text(disp, "Hello World!!!!!! 1 2 3", disp.X_MAX / 2)
 	curThread.start()
 
 menuOpts = [
 ["Exit", doExit],
 ["Clear/Stop", doClear],
 ["Hello World", doHelloWorld],
+["Hello World Scroll", doHelloWorldScroll],
 ["Row/Col Demo", doDemo],
 ["Game of Life", doGameOfLife],
-["90s Mainframe", doMainframe],
-["90s Mainframe (Scroll)", doMainframeScroll]
+["90s Mainframe", doMainframe]
 ]
 
 def printMenu():
 	for i in range(0, len(menuOpts)):
 		print str(i) + " - " + menuOpts[i][0]
+
+#def fireOption(opt):
 
 def handleMenu(choice):
 	try:
@@ -155,50 +157,6 @@ try:
 		i = raw_input("Choice: ")
 		handleMenu(i)
 
-	time.sleep(2)
-	
-	while True:
-		disp.clearDispBuf()
-		for x in range(0, disp.X_MAX):
-			 disp.clearDispBuf()
-			 disp.drawCol(x)
-			 disp.sendDisplay()
-		
-		for y in range(0, disp.Y_MAX):
-			 disp.clearDispBuf()
-			 disp.drawRow(y)
-			 disp.sendDisplay()
-	
-	# clearDispBuf()
-	# for x in range(0, X_MAX):
-		# for y in range(0, Y_MAX):
-			# setPixel(x, y, (x + y) % 2)
-			
-	# sendDisplay()
-				
-	# while 1:
-		# data = ''
-		# for x in range(0, X_MAX):
-			# for y in range(0, Y_MAX):
-				
-				
-		# for shift in range(0, 127):
-			# clearDispBuf()
-			# for i in range(0 + shift, 128 + shift):
-				# setCol(i - shift, i)
-			
-			# start_time = time.time() * 1000
-			# sendDisplay()
-			# end_time = time.time() * 1000
-			# print("%g ms" % (end_time - start_time))
-		
-	#b = com.write(bytes("t" + data))
-	#res = com.read()
-	#if(b > 0 and res == '*'):
-	#	print "Success syncing time!"
-	#else:
-	#	print "There was an error syncing the time! Make sure your clock is in Serial Set Mode"
-	#com.close()
 except ValueError, e:
 	print e
 	sys.exit()
