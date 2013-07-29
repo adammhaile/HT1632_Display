@@ -79,6 +79,30 @@ class byte_time(stop_thread.dispThread):
 				self.disp.sendDisplay()
 			time.sleep(0.1)
 
+class text_time(stop_thread.dispThread):
+	def __init__(self, disp):
+		super(text_time, self).__init__()
+		self.disp = disp	
+		self.dt = datetime.now()
+		self.dt_string = ""
+		self.last_pos = 0
+
+	def run(self):
+		first = True
+		while not self._stopped():
+			self.dt = datetime.now()
+			dts = self.dt.strftime("%m/%d/%Y - %H:%M:%S")
+			if dts != self.dt_string:
+				self.dt_string = dts
+				self.disp.setCurrentString(self.dt_string, self.last_pos, first)
+				if first:
+					first = False
+				self.last_pos = self.disp.bounceCurrentString()
+			else:
+				self.last_pos = self.disp.bounceCurrentString()
+			#time.sleep(0.1)
+
+
 import urllib2
 import os
 class mainframe(stop_thread.dispThread):

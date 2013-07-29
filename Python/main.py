@@ -55,16 +55,22 @@ def doByteTime():
 	curThread = byte_time(disp)
 	curThread.start()
 
+def doTextTime():
+	global curThread
+	curThread = text_time(disp)
+	curThread.start()
+
 menuOpts = [
 ["Exit", doExit],
 ["Clear/Stop", doClear],
 ["Hello World", doHelloWorld],
-["Text Scroll", doTextScroll],
-["Text Bounce", doTextBounce],
+["Scroll Text", doTextScroll],
+["Bounce Text", doTextBounce],
 ["Row/Col Demo", doDemo],
 ["Game of Life", doGameOfLife],
 ["90s Mainframe", doMainframe],
-["Byte Time", doByteTime]
+["Byte Time", doByteTime],
+["Text Time", doTextTime]
 ]
 
 def printMenu():

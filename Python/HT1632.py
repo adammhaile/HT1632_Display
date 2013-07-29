@@ -94,27 +94,28 @@ class HT1632:
 	def getStringWidth(self, string):
 		return self._font.getStringWidth(string)
 
-	def setCurrentString(self, string, pos):
+	def setCurrentString(self, string, pos, center=False):
 		self._curString = string
 		self._curStringW = self.getStringWidth(self._curString)
 		self._curStringPos = pos
+		if center and self._curStringW < self.X_MAX:
+			self._curStringPos = (self.X_MAX - self._curStringW) / 2
 	
 	def scrollCurrentString(self):
 		self.clearDispBuf()
 		self.printString(self._curStringPos, self._curString)
+		self.sendDisplay()
 
 		self._curStringPos = self._curStringPos - 1
 		if self._curStringPos + self._curStringW <= 0:
 			self._curStringPos = self.X_MAX - 1
-
-		self.sendDisplay()
 
 		return self._curStringPos
 
 	def bounceCurrentString(self):
 		self.clearDispBuf()
 		self.printString(self._curStringPos, self._curString)
-
+		self.sendDisplay()
 		self._curStringPos = self._curStringPos + self._curStringDir
 		if self._curStringW > self.X_MAX:
 			if self._curStringDir == -1 and self._curStringPos + self._curStringW < self.X_MAX:
@@ -126,7 +127,5 @@ class HT1632:
 				self._curStringDir = 1
 			elif self._curStringPos + self._curStringW > self.X_MAX:
 				self._curStringDir = -1
-
-		self.sendDisplay()
 
 		return self._curStringPos
