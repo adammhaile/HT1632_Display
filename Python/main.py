@@ -40,19 +40,31 @@ def doMainframe():
 	curThread = mainframe(disp)
 	curThread.start()
 
-def doHelloWorldScroll():
+def doTextScroll():
 	global curThread
-	curThread = scroll_text(disp, "Hello World!!!!!! 1 2 3", disp.X_MAX / 2)
+	curThread = scroll_text(disp, disp.X_MAX / 2)
+	curThread.start()
+
+def doTextBounce():
+	global curThread
+	curThread = bounce_text(disp, 0)
+	curThread.start()
+
+def doByteTime():
+	global curThread
+	curThread = byte_time(disp)
 	curThread.start()
 
 menuOpts = [
 ["Exit", doExit],
 ["Clear/Stop", doClear],
 ["Hello World", doHelloWorld],
-["Hello World Scroll", doHelloWorldScroll],
+["Text Scroll", doTextScroll],
+["Text Bounce", doTextBounce],
 ["Row/Col Demo", doDemo],
 ["Game of Life", doGameOfLife],
-["90s Mainframe", doMainframe]
+["90s Mainframe", doMainframe],
+["Byte Time", doByteTime]
 ]
 
 def printMenu():

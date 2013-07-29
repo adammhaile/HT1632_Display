@@ -27,9 +27,9 @@ class scroll_text(stop_thread.dispThread):
 		self.text = text
 		self.pos = pos	
 		if self.text == "":
-			self.requiresInput = self.text != ""
+			self.getInput()
 
-	def getInput():
+	def getInput(self):
 		self.text = raw_input("Text to scroll: ")
 
 	def run(self):
@@ -44,6 +44,63 @@ class scroll_text(stop_thread.dispThread):
 
 			self.disp.sendDisplay()
 			#time.sleep(0.1)
+
+class bounce_text(stop_thread.dispThread):
+	def __init__(self, disp, pos, text=""):
+		super(bounce_text, self).__init__()
+		self.disp = disp
+		self.text = text
+		self.pos = pos	
+		self.dir = -1
+		if self.text == "":
+			self.getInput()
+
+	def getInput(self):
+		self.text = raw_input("Text to bounce: ")
+
+	def run(self):
+		w = self.disp.getStringWidth(self.text)
+		while not self._stopped():
+			self.disp.clearDispBuf()
+			self.disp.printString(self.pos, self.text)
+
+			self.pos = self.pos + self.dir
+			if w > self.disp.X_MAX:
+				if self.dir == -1 and self.pos + w < self.disp.X_MAX:
+					self.dir = 1
+				elif self.dir == 1 and self.pos >= 1:
+					self.dir = -1
+			else:
+				if self.pos <= 0:
+					self.dir = 1
+				elif self.pos + w > self.disp.X_MAX:
+					self.dir = -1
+
+			self.disp.sendDisplay()
+			#time.sleep(0.1)
+
+from datetime import datetime
+class byte_time(stop_thread.dispThread):
+	def __init__(self, disp):
+		super(byte_time, self).__init__()
+		self.disp = disp	
+		self.dt = datetime.now()
+		self.dt_string = ""
+
+	def run(self):
+		while not self._stopped():
+			self.dt = datetime.now()
+			dts = self.dt.strftime("%A %B %d %Y %H:%M:%S")
+			if dts != self.dt_string:
+				self.dt_string = dts
+				pos = ( self.disp.X_MAX - len(self.dt_string)) / 2
+
+				self.disp.clearDispBuf()
+				for c in self.dt_string:
+					self.disp.setColFromChar(pos, c)
+					pos = pos + 1
+				self.disp.sendDisplay()
+			time.sleep(0.1)
 
 import urllib2
 import os
