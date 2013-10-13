@@ -1,10 +1,10 @@
 import threading
-import stop_thread
+import disp_thread
 from random import randint
 import time
 import copy
 
-class GameOfLife(stop_thread.dispThread):
+class GameOfLife(disp_thread.dispThread):
 	def __init__(self, disp):
 		super(GameOfLife, self).__init__()
 		self.disp = disp	

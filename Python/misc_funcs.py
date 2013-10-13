@@ -1,8 +1,8 @@
 import threading
-import stop_thread
+import disp_thread
 import time
 
-class row_col_demo(stop_thread.dispThread):
+class row_col_demo(disp_thread.dispThread):
 	def __init__(self, disp):
 		super(row_col_demo, self).__init__()
 		self.disp = disp	
@@ -20,7 +20,7 @@ class row_col_demo(stop_thread.dispThread):
 				 self.disp.drawRow(y)
 				 self.disp.sendDisplay()
 
-class scroll_text(stop_thread.dispThread):
+class scroll_text(disp_thread.dispThread):
 	def __init__(self, disp, pos, text=""):
 		super(scroll_text, self).__init__()
 		self.disp = disp
@@ -38,7 +38,7 @@ class scroll_text(stop_thread.dispThread):
 			self.disp.scrollCurrentString()
 			#time.sleep(0.1)
 
-class bounce_text(stop_thread.dispThread):
+class bounce_text(disp_thread.dispThread):
 	def __init__(self, disp, pos, text=""):
 		super(bounce_text, self).__init__()
 		self.disp = disp
@@ -57,7 +57,7 @@ class bounce_text(stop_thread.dispThread):
 			#time.sleep(0.1)
 
 from datetime import datetime
-class byte_time(stop_thread.dispThread):
+class byte_time(disp_thread.dispThread):
 	def __init__(self, disp):
 		super(byte_time, self).__init__()
 		self.disp = disp	
@@ -79,7 +79,7 @@ class byte_time(stop_thread.dispThread):
 				self.disp.sendDisplay()
 			time.sleep(0.1)
 
-class text_time(stop_thread.dispThread):
+class text_time(disp_thread.dispThread):
 	def __init__(self, disp):
 		super(text_time, self).__init__()
 		self.disp = disp	
@@ -105,7 +105,7 @@ class text_time(stop_thread.dispThread):
 
 import urllib2
 import os
-class mainframe(stop_thread.dispThread):
+class mainframe(disp_thread.dispThread):
 	def __init__(self, disp):
 		super(mainframe, self).__init__()
 		self.disp = disp	
