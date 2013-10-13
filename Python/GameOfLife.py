@@ -33,7 +33,7 @@ class GameOfLife(stop_thread.dispThread):
 class Table:
 
 	def __init__(self, height, width, rand_max, table=None):
-		self.toroidal = True
+		self.toroidal = False
 		if table:
 			self.table = table
 			self.height = len(table)
